@@ -1,14 +1,25 @@
 <script>
+
+
 export default {
   data() {
     return {
-      teste: "testando componente"
+      botao: "botao"
+    }
+  },
+  props: ['button'],
+  methods:{
+    handleTeste(){
+      return this.$emit('button', this.button)
+      
     }
   }
 }
 </script>
 
 <template>
-    <h2>{{ teste }}</h2>
+    <div class="w-20 h-12 bg-[#696969] rounded-lg flex items-center justify-center hover:scale-110 cursor-pointer font-poppins text-white" @click="handleTeste">
+      {{button  }}
+    </div>
     
 </template>
