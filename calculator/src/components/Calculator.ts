@@ -1,18 +1,3 @@
-<template>
-  <div class="box-shadow-md bg-stone-800 border p-5 rounded-md">
-    <Display :display="state.displayValue" />
-    <div class="grid grid-cols-4 gap-2">
-      <Button
-        v-for="button in buttons"
-        :key="button"
-        :button="button"
-        @button="receiveEmit"
-      />
-    </div>
-  </div>
-</template>
-
-<script lang="ts">
 import { defineComponent, reactive } from "vue";
 import Button from './Button.vue';
 import Display from "./Display.vue";
@@ -30,7 +15,7 @@ export default defineComponent({
     Display,
   },
   setup() {
-    const state = reactive<Data>({
+    const state = reactive({
       displayValue: "0",
       result: 0,
     });
@@ -72,17 +57,3 @@ export default defineComponent({
     },
   },
 });
-</script>
-
-<style scoped>
-/* Estilos adicionais com TailwindCSS */
-.button-op {
-  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 bg-gray-200 p-4 rounded-full hover:bg-gray-300 transition duration-200;
-}
-.button-clear {
-  @apply focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 bg-red-500 text-white p-4 rounded-full hover:bg-red-600 transition duration-200;
-}
-.button-equal {
-  @apply focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 bg-green-500 text-white p-4 rounded-full hover:bg-green-600 transition duration-200;
-}
-</style>
