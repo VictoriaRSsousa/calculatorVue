@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+
 export default {
   props: {
     button: {
@@ -8,6 +9,8 @@ export default {
   },
   methods: {
     handleButtonClick() {
+  //    console.log(this.button);
+      
       this.$emit('button', this.button);
     },
   },

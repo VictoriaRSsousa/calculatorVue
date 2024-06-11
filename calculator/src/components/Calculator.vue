@@ -1,6 +1,136 @@
+<script lang="ts">
+import Button from "./Button.vue";
+import Display from "./Display.vue";
+import Calculator from "../utils/operations";
+
+
+interface Data {
+  buttons: Array<string | number>;
+  display: string;
+  countOperator: number
+  
+}
+
+export default {
+  data(): Data {
+    return {
+      buttons: [7, 8, 9, "+", 4, 5, 6, "-", 1, 2, 3, "/", "CE", 0, "=", "*"],
+      display: "",
+      countOperator : 0     
+    };
+  },
+  components: {
+    Button,
+    Display,
+  },
+  methods: {
+    receiveEmit(button: string) {
+      if(button==='-'|| button==='/'|| button==='*'|| button==='+' ){
+        this.countOperator++
+      }
+
+      if (button === "CE") {
+        this.buttonClear();
+      } else if (button === "=") {
+        this.buttonEqual();
+      }
+       else {
+        this.display = this.display + button;
+      }
+
+    },
+    buttonClear() {
+      this.display = "";
+    },
+    buttonEqual() {   
+      const regex = /(\d+)([+\-*/])(\d+)/;
+      const splitExpression = this.display.match(regex);
+      console.log(splitExpression);
+
+      
+
+      if(splitExpression ===null){
+        console.log("Expressão invalida!");
+      }
+
+      else if( splitExpression[0]==='*' || splitExpression[0]==='/' ){
+        this.buttonClear()
+        alert("A expressão precisa iniciar com um número!!")
+      }
+      // else if(splitExpression[0]==='-' || splitExpression[0]==='+'){
+      //   this.countOperator = 0
+      //   const firstNumber = parseInt(splitExpression[0]+splitExpression[1])
+   
+        
+      //   const refatoreExpressios = splitExpression?.slice(2)
+        
+      //   refatoreExpressios?.unshift(String(firstNumber))
+      //   this.getResult(refatoreExpressios)
+      // }
+      else{
+        //console.log(splitExpression[0]);
+        
+        console.log("splitExpression");
+
+      }
+
+    },
+    getResult(expression: Array<string>){
+      // let total = 0
+      // expression.forEach((element) => {
+      //   if(oper)
+      // })
+  
+
+}
+},
+
+    
+
+
+
+    //   if (splitExpression) {
+    //     const firstNumber = parseInt(splitExpression[1]);
+    //     const operator = splitExpression[2];
+    //     const secondNumber = parseInt(splitExpression[3]);
+    //     this.display = String(
+    //       this.getResult(firstNumber, operator, secondNumber)
+    //     );
+    //   } else {
+    //     alert("Formato de operação inválido");
+    //     this.buttonClear();
+    //   }
+    // },
+    // getResult(firstNumber: number, operator: string, secondNumber: number) {
+    //   const calcule = new Calculator();
+    //   switch (operator) {
+    //     case "+": {
+    //       return calcule.add(firstNumber, secondNumber);
+    //     }
+    //     case "-": {
+    //       return calcule.sub(firstNumber, secondNumber);
+    //     }
+    //     case "*": {
+    //       return calcule.mult(firstNumber, secondNumber);
+    //     }
+    //     case "/": {
+    //       return calcule.division(firstNumber, secondNumber);
+    //     }
+    //   }
+    //},
+
+    computed:{
+      calculator(){
+        return new Calculator()
+      }
+    }
+  
+};
+</script>
+
 <template>
   <div class="box-shadow-md bg-stone-800 border p-5 rounded-md">
-    <Display :display="state.displayValue" />
+    <Display :display="display" />
     <div class="grid grid-cols-4 gap-2">
       <Button
         v-for="button in buttons"
@@ -11,78 +141,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, reactive } from "vue";
-import Button from './Button.vue';
-import Display from "./Display.vue";
-import { evaluate } from "mathjs";
-
-interface Data {
-  buttons: Array<string | number>;
-  display: string;
-}
-
-export default defineComponent({
-  name: "Calculator",
-  components: {
-    Button,
-    Display,
-  },
-  setup() {
-    const state = reactive<Data>({
-      displayValue: "0",
-      result: 0,
-    });
-
-    const buttons: Array<string | number> = [7, 8, 9, '+', 4, 5, 6, '-', 1, 2, 3, '/', 'C', 0, '=', '*'];
-
-    const handleButtonClick = (value: string) => {
-      if (state.displayValue === "0") {
-        state.displayValue = "";
-      }
-      state.displayValue += value;
-    };
-
-    const handleClear = () => {
-      state.displayValue = "0";
-      state.result = 0;
-    };
-
-    const handleEqual = () => {
-      try {
-        state.result = evaluate(state.displayValue);
-        state.displayValue = state.result.toString();
-      } catch {
-        state.displayValue = "0";
-      }
-    };
-
-    return { state, buttons, handleButtonClick, handleClear, handleEqual };
-  },
-  methods: {
-    receiveEmit(button: string) {
-      if (button === 'C') {
-        this.handleClear();
-      } else if (button === '=') {
-        this.handleEqual();
-      } else {
-        this.handleButtonClick(button);
-      }
-    },
-  },
-});
-</script>
-
-<style scoped>
-/* Estilos adicionais com TailwindCSS */
-.button-op {
-  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 bg-gray-200 p-4 rounded-full hover:bg-gray-300 transition duration-200;
-}
-.button-clear {
-  @apply focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 bg-red-500 text-white p-4 rounded-full hover:bg-red-600 transition duration-200;
-}
-.button-equal {
-  @apply focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 bg-green-500 text-white p-4 rounded-full hover:bg-green-600 transition duration-200;
-}
-</style>
