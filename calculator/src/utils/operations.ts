@@ -17,6 +17,7 @@ export default class Calculator {
     public division(a: number, b: number): number {
         if (b === 0) {
             alert("Divisão por 0 não permitida!")
+            return 0
         }
         return a / b;
     }
